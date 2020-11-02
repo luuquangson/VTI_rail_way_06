@@ -4,18 +4,18 @@ USE testing_system_assignment_1;
 
 
 CREATE TABLE  `Department` (
- DepartmentId   			SMALLINT UNSIGNED PRIMARY KEY  ,
- DepartmentName   		 	VARCHAR(50) UNIQUE KEY
+ DepartmentId   			SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
+ DepartmentName   		 	VARCHAR(50) NOT NULL
  );
  
  CREATE TABLE `Position` (
- Position_id 				TINYINT UNSIGNED PRIMARY KEY ,
- Position_name 				VARCHAR (50)
- );
+ Position_id 				TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+ Position_name 				ENUM ('DEV' , 'TEST' , 'SRCUM MASTER' , 'PM' )
+ ); 
  
  CREATE TABLE  `Account` (
-  Account_id 				TINYINT UNSIGNED PRIMARY KEY ,
-  Email 					VARCHAR(50) ,
+  Account_id 				TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
+  Email 					VARCHAR(50) NOT NULL,
   Username 					VARCHAR (50),
   Fullname 					VARCHAR (50),
   DepartmentId 				SMALLINT UNSIGNED ,
@@ -46,18 +46,19 @@ Type_name 					VARCHAR (50)
 
 CREATE TABLE Category_question (
 Category_id 				TINYINT UNSIGNED PRIMARY KEY ,
-Category_name				VARCHAR (50)
+Category_name				ENUM ( 'JAVA' , 'NET' , ' SQL ' , 'POSTMAN ' , 'RUBY ' )
 );
 
 CREATE TABLE Question (
-Question_id 				TINYINT UNSIGNED PRIMARY KEY ,
-Content						VARCHAR (50),
+Question_id 				TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
+Content						TEXT,
 Category_id 				TINYINT UNSIGNED,
-Type_id 					VARCHAR (50),
+Type_id 					TINYINT UNSIGNED,
 Creator_id 					TINYINT UNSIGNED,
 Create_date 				DATE,
 FOREIGN KEY ( Category_id ) REFERENCES Category_question ( Category_id ),
-FOREIGN KEY ( Creator_id ) REFERENCES  `Group` ( Creator_id )
+FOREIGN KEY ( Creator_id ) REFERENCES  `Group` ( Creator_id ),
+FOREIGN KEY ( Type_id ) REFERENCES  Type_question ( Type_id )
 );
 
 
@@ -70,18 +71,20 @@ Iscorrect 					ENUM  ('TRUE' , 'FLASE')
        
  CREATE TABLE Exam (
  Exam_id 					SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
- Code1 						INT,
- title 						VARCHAR(50),
- category	 				VARCHAR(50),
- duration 					DATE,
- Creator_id 				INT UNSIGNED,
- Create_date 				DATE,
- FOREIGN KEY ( Create_date ) REFERENCES Question ( Create_date )
+ Code1 						TINYINT UNSIGNED,
+ Title 						VARCHAR(50),
+ Category	 				VARCHAR(50),
+ Duration 					DATE,
+ Creator_id 				TINYINT UNSIGNED,
+ Create_date 				DATE
  );
  
- CREATE TABLE exam_question (
- exam_id 					SMALLINT UNSIGNED PRIMARY KEY,
- question_id 				VARCHAR (50)
+ CREATE TABLE Exam_question (
+ Exam_id 					SMALLINT UNSIGNED ,
+ Question_id 				TINYINT UNSIGNED,
+ PRIMARY KEY ( Exam_id , Question_id ) ,
+ FOREIGN KEY ( Exam_id ) REFERENCES Exam ( Exam_id ),
+ FOREIGN KEY ( Question_id ) REFERENCES Question ( Question_id )
  );
 
  
